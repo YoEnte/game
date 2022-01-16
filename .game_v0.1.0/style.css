@@ -1,0 +1,39 @@
+body{
+	width: 100vw;
+	height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+	overflow: hidden;
+
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+canvas{
+    position: absolute;
+    outline: solid #000000 3px;
+    border-radius: 2px;
+    background-color: #000000;
+    width: 128px;
+    height: 128px;
+}
+.controller{
+	position: absolute;
+	left: 20px;
+	top: 20px;
+}
+.pixelated{
+	image-rendering: -moz-crisp-edges;
+    image-rendering: -webkit-crisp-edges;
+	image-rendering: pixelated;
+    image-rendering: crisp-edges;
+    image-rendering: optimizeSpeed;
+}
+.img_loader, .img_loader > *{
+	width: 0;
+	height: 0;
+	display: none;
+}
