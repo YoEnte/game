@@ -37,6 +37,11 @@ exports.pages = {
 		password: false,
 		type: 'snapshot',
 	},
+    external_file: {
+        directory:  '.external_file',
+        password: false,
+        type: 'snapshot',
+    }
 };
 
 exports.gen_password = 'ie3H;1(q9';

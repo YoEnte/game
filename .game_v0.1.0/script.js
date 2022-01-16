@@ -86,7 +86,7 @@ class Player{
 			}
 		}
 
-        this.hypo = Math.sqrt((this.move.x_diff * this.move.x_diff) + (this.move.y_diff * this.move.y_diff));
+        this.hypo = Math.sqrt((this.move.x_diff ** 2) + (this.move.y_diff ** 2));
 
 		if(!(this.move.x_diff == 0 && this.move.y_diff == 0)){
 			this.anm.rotation_deg = (Math.atan2(this.move.y_diff, this.move.x_diff) * 180 / Math.PI) + 90;

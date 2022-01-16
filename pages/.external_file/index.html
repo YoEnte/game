@@ -1,3 +1,10 @@
 <html>
+	<script>
+		var ejs_statics = '<%= statics %>';
+		var ejs_page = '<%= page %>';
+		var ejs_host = '<%= host %>';
+	</script>
+    <script src="<%= host %>/<%= statics %>/<%= page %>/data.js"></script>
+    <script src="<%= host %>/<%= statics %>/<%= page %>/class.js"></script>
     <script src="<%= host %>/<%= statics %>/<%= page %>/script.js"></script>
 </html>
