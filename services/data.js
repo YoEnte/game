@@ -21,7 +21,7 @@ exports.pages = {
 		password: false,
 	},
 
-	// game versions
+	// game tests
 	move_test1: {
 		directory: '.move',
 		password: false,
@@ -29,6 +29,11 @@ exports.pages = {
 	},
 	tile_test1: {
 		directory: '.tile_test_01',
+		password: false,
+		type: 'snapshot',
+	},
+	tile_test2: {
+		directory: '.tile_test_02',
 		password: false,
 		type: 'snapshot',
 	},
@@ -40,7 +45,19 @@ exports.pages = {
     external_file: {
         directory:  '.external_file',
         password: false,
-        type: 'snapshot',
+        type: 'experimental',
+    },
+	canvas_test1: {
+		directory:  '.canvas_test_01',
+        password: false,
+        type: 'experimental',
+	},
+
+	// game versions
+	game_v0_1_0: {
+        directory:  'game_v0.1.0',
+        password: false,
+        type: 'experimental',
     }
 };
 

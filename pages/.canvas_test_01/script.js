@@ -15,7 +15,7 @@ var newHeight = ctx.height * scale;
 
 var mouse_x, mouse_y;
 
-class Player{
+class Move{
     constructor(px, py){
         this.px = px;
         this.py = py;
@@ -32,34 +32,6 @@ class Player{
             y_vel       : 0,
 			toggle		: true,
         }
-        this.anm = {
-            table       : [8, 4],
-			frame_size	: [32, 64],
-            img_size    : [256, 256],
-            frame       : 0,
-			rotation_deg: 180,
-			rotation_top: [320, 40],
-			rotation_bot: [220, 140],
-            rotation_dir: 2,
-            delay_frames: 6,
-			delay_frame : 0,
-        }
-    }
-
-    draw(){
-
-		this.anm.delay_frame++;
-		if(this.anm.delay_frame >= this.anm.delay_frames){
-			this.anm.delay_frame = 0;
-			
-			this.anm.frame = (this.move.x_diff != 0 || this.move.y_diff != 0) ? this.anm.frame + 1 : 0;
-			if(this.anm.frame >= this.anm.table[0]){
-				this.anm.frame = 0;
-			}
-		}
-
-		ctx.imageSmoothingEnabled = false;
-        ctx.drawImage(document.querySelector('.josef1'), this.anm.frame_size[0] * this.anm.frame, this.anm.frame_size[1] * this.anm.rotation_dir, this.anm.frame_size[0] , this.anm.frame_size[1], this.px - (this.anm.frame_size[0] / 2), this.py - (this.anm.frame_size[1] / 1.2), this.anm.frame_size[0], this.anm.frame_size[1]);
     }
 
     update(){
@@ -67,7 +39,7 @@ class Player{
 			this.move.x_diff = this.move.right - this.move.left;
         	this.move.y_diff = this.move.down - this.move.up;
 		}else if(controller == 'mouse'){
-			if(Math.abs(mouse_x - player.px) > 2 || Math.abs(mouse_y - player.py) > 2){
+			if(Math.abs(mouse_x - this.px) > 2 || Math.abs(mouse_y - this.py) > 2){
 				if(this.move.toggle){
 					this.move.x_diff = normalize(mouse_x - this.px, mouse_y - this.py)[0];
 					this.move.y_diff = normalize(mouse_x - this.px, mouse_y - this.py)[1];
@@ -81,29 +53,12 @@ class Player{
 				this.move.toggle = false;
 			}
 
-			if(Math.abs(mouse_x - player.px) > 35 || Math.abs(mouse_y - player.py) > 35){
+			if(Math.abs(mouse_x - this.px) > 35 || Math.abs(mouse_y - this.py) > 35){
 				this.move.toggle = true;
 			}
 		}
 
-        this.hypo = Math.sqrt((this.move.x_diff ** 2) + (this.move.y_diff ** 2));
-
-		if(!(this.move.x_diff == 0 && this.move.y_diff == 0)){
-			this.anm.rotation_deg = (Math.atan2(this.move.y_diff, this.move.x_diff) * 180 / Math.PI) + 90;
-			if(this.anm.rotation_deg < 0){
-				this.anm.rotation_deg += 360;
-			}
-		}
-		
-		if(!(this.anm.rotation_deg < this.anm.rotation_top[0] && this.anm.rotation_deg > this.anm.rotation_top[1])){
-			this.anm.rotation_dir = 0;
-		}else if(this.anm.rotation_deg < this.anm.rotation_bot[1] && this.anm.rotation_deg > this.anm.rotation_top[1]){
-			this.anm.rotation_dir = 1;
-		}else if(this.anm.rotation_deg < this.anm.rotation_bot[0] && this.anm.rotation_deg > this.anm.rotation_bot[1]){
-			this.anm.rotation_dir = 2;
-		}else if(this.anm.rotation_deg > this.anm.rotation_bot[0] && this.anm.rotation_deg < this.anm.rotation_top[0]){
-            this.anm.rotation_dir = 3;
-        }
+        this.hypo = Math.sqrt((this.move.x_diff * this.move.x_diff) + (this.move.y_diff * this.move.y_diff));
 
         this.move.x_vel = (this.move.x_diff / this.hypo) * this.move.speed; 
 		this.move.y_vel = (this.move.y_diff / this.hypo) * this.move.speed; 
@@ -116,7 +71,6 @@ class Player{
 }
 
 const assets = {
-	josef1: 'player_sprites.png',
 	map1: 'test.png',
 }
 
@@ -133,6 +87,7 @@ function onload(){
 			assets_loaded++;
 
 			if(assets_num == assets_loaded){
+
 				gameloop();
 			}
 		});
@@ -161,13 +116,10 @@ function gameloop(){
     ctx.clearRect(-100, -100, canvas_size + 100, canvas_size + 100);
     camera.move(camera.x, camera.y);
     ctx.translate(Math.round(-camera.x + canvas.width / half), Math.round(-camera.y + canvas.height / half));
-
-    let map_img = new Image();
-    map_img.src = `${ejs_host}/${ejs_statics}/${ejs_page}/test.png`;
 	ctx.imageSmoothingEnabled = false;
     ctx.drawImage(document.querySelector('.map1'), 0, 0);
-    player.update();
-	player.draw();
+
+    move.update();
 	ctx.restore()
 
     window.requestAnimationFrame(gameloop);
@@ -178,7 +130,7 @@ var camera = {
     move(x, y) {
         let easing = 0.05 * (half / 2);
 
-        let dx = player.px - x;
+        let dx = move.px - x;
         x += dx * easing
 
         if(x > canvas.width / half && x < 866 - canvas.width / half){
@@ -188,7 +140,7 @@ var camera = {
         }else{
 			camera.x = 866 - canvas.width / half;
 		}
-        let dy = player.py - y;
+        let dy = move.py - y;
         y += dy * easing
 
         if(y > canvas.height / half && y < 862 - canvas.height / half){
@@ -198,8 +150,6 @@ var camera = {
         }else{
             camera.y = 862 - canvas.height / half;
         }
-
-        return camera.x, camera.y;
     },
     x: 866 / 2,
     y: 862 / 2,
@@ -222,24 +172,24 @@ function toggle_controller(){
 }
 
 window.addEventListener('keydown', event => {
-    if(event.which == 68) player.move.right = 1;
-    if(event.which == 65) player.move.left = 1;
-    if(event.which == 83) player.move.down = 1;
-    if(event.which == 87) player.move.up = 1;
+    if(event.which == 68) move.move.right = 1;
+    if(event.which == 65) move.move.left = 1;
+    if(event.which == 83) move.move.down = 1;
+    if(event.which == 87) move.move.up = 1;
 });
 
 window.addEventListener('keyup',  event => {
-    if(event.which == 68) player.move.right = 0;
-    if(event.which == 65) player.move.left = 0;
-    if(event.which == 83) player.move.down = 0;
-    if(event.which == 87) player.move.up = 0;
+    if(event.which == 68) move.move.right = 0;
+    if(event.which == 65) move.move.left = 0;
+    if(event.which == 83) move.move.down = 0;
+    if(event.which == 87) move.move.up = 0;
 });
 
 window.addEventListener('blur', event => {
-	player.move.right = 0;
-    player.move.left = 0;
-    player.move.down = 0;
-    player.move.up = 0;
+	move.move.right = 0;
+    move.move.left = 0;
+    move.move.down = 0;
+    move.move.up = 0;
 });
 
 
@@ -248,7 +198,7 @@ var mouse_event = undefined;
 
 function mousedown(event){
 	_mousedown = true;
-	player.move.toggle = true;
+	move.move.toggle = true;
 	mouse_event = event;
 }
 
@@ -292,4 +242,4 @@ window.addEventListener('wheel', event => {
 	}
 });
 
-var player = new Player(866 / 2, 862 / 2);
+var move = new Move(866 / 2, 862 / 2);

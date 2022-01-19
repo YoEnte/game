@@ -1,0 +1,26 @@
+body{
+	width: 100vw;
+	height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+	overflow: hidden;
+}
+canvas{
+    position: absolute;
+    outline: solid #000000 3px;
+    border-radius: 2px;
+    background-color: #000000;
+}
+
+.pixelated{
+	image-rendering: -moz-crisp-edges;
+    image-rendering: -webkit-crisp-edges;
+    image-rendering: crisp-edges;
+	image-rendering: pixelated;
+}
+.img_loader, .img_loader > *{
+	width: 0;
+	height: 0;
+	display: none;
+}

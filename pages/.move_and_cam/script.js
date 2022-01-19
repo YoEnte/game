@@ -162,8 +162,6 @@ function gameloop(){
     camera.move(camera.x, camera.y);
     ctx.translate(Math.round(-camera.x + canvas.width / half), Math.round(-camera.y + canvas.height / half));
 
-    let map_img = new Image();
-    map_img.src = `${ejs_host}/${ejs_statics}/${ejs_page}/test.png`;
 	ctx.imageSmoothingEnabled = false;
     ctx.drawImage(document.querySelector('.map1'), 0, 0);
     player.update();
