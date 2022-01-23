@@ -23,11 +23,9 @@ const objects = {
 			rotation_bot: [220, 140],
             rotation_dir: 2,
             table       : [8, 4],
-            x_off       : 16,
-            y_off       : 60,
         },
         hitbox: [
-			{w: 16, h: 8, x: 0, y: 0, x_off: -8, y_off: -4},
+			{w : 16, h : 8, x : 0, y : 0, x_off: -8, y_off: -2},
 		],
     },
     campfire: {
@@ -38,11 +36,9 @@ const objects = {
 			frame_size	: [32, 32],
             img_size    : [256, 32],
             table       : [8, 1],
-            x_off       : 16,
-            y_off       : 24,
         },
         hitbox: [
-            {w: 23, h: 12, x: 0, y: 0, x_off: -11, y_off: -5},
+            {w :20, h : 10, x : 0, y : 0, x_off: -10, y_off : 4}
         ]
     }
 }

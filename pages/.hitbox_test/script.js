@@ -46,7 +46,7 @@ function gameloop(){
 	if(_mousedown){
 		get_mouse(mouse_event);
 	}
-	
+
 	half = 2 * scale;
 
     ctx.save();
@@ -232,4 +232,4 @@ window.addEventListener('wheel', event => {
 });
 
 var player = new Player(map[selected_map].width / 2, map[selected_map].height / 2, 'josef');
-var campfire = new Placeable(774, 708, 'campfire')
+var campfire = new Placeable(696, 774, 'campfire')

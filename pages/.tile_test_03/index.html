@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<link href="<%= host %>/<%= statics %>/<%= page %>/style.css" rel="stylesheet" />
+	</head>
+	<body>
+		<div class="img_loader"></div>
+		<canvas class="pixelated"></canvas>
+	</body>
+	
+	<script>
+		var ejs_statics = '<%= statics %>';
+		var ejs_page = '<%= page %>';
+		var ejs_host = '<%= host %>';
+	</script>
+	<script src="<%= host %>/<%= statics %>/<%= page %>/map.js"></script>
+	<script src="<%= host %>/<%= statics %>/<%= page %>/script.js"></script>
+</html>

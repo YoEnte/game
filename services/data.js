@@ -22,6 +22,11 @@ exports.pages = {
 	},
 
 	// game tests
+    hitbox_test1: {
+        directory: '.hitbox_test',
+        password: false,
+        type: 'snapchot',
+    },
 	move_test1: {
 		directory: '.move',
 		password: false,
@@ -34,6 +39,11 @@ exports.pages = {
 	},
 	tile_test2: {
 		directory: '.tile_test_02',
+		password: false,
+		type: 'snapshot',
+	},
+	tile_test3: {
+		directory: '.tile_test_03',
 		password: false,
 		type: 'snapshot',
 	},
