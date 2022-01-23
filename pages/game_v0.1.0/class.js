@@ -54,10 +54,8 @@ class Objects{
                             ctx.fillStyle = 'red'
                             ctx.fillRect(element.x, element.y, 1, 1);
                             ctx.fillRect(box.x, box.y, 1, 1);
-                            ctx.fillStyle = 'green'
-                            ctx.fillRect(element.x + 1, element.y, 1, box.h / 2)
                             ctx.fillStyle = 'pink'
-                            ctx.fillRect(this.x, this.y, 1, 1 )
+                            ctx.fillRect(this.x, this.y, 1, 1)
                         */
                     }
                 });
