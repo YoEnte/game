@@ -6,7 +6,7 @@ const data = require('./services/data.js');
 
 // server instance
 const app = express();
-
+var test = 2;
 // port
 const port = process.env.PORT || 3000;
 
