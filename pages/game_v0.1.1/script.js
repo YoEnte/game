@@ -1,4 +1,5 @@
 document.addEventListener('DOMContentLoaded', onload);
+
 var canvas_size = 0;
 var fov = 32 * 20;
 var ratio = 9 / 16;

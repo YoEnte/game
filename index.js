@@ -32,15 +32,17 @@ app.all('*', (req, res, next) => {
     }else{
         trailing_good = true;
     }
+
+	if(['/favicon.ico'].includes(url)){
+		res.send('');
+	}
     
     if(trailing_good){
-		if(url == '/uptime'){
-        	tools.log('uptime', `uptime robot monitored`);
-		}else{
-			tools.log('info', `got a request on: ${url}`);
-		}
+		tools.log('info', `got a request on: ${url}`);
         next();
-    }
+    }else{
+		res.status(404).render(path.join(__dirname, 'pages', data.pages['404'].directory, 'index.html'), {host: host, statics: static_files, page: data.pages['404'].directory});
+	}
 });
 
 // setup engine
@@ -61,47 +63,41 @@ app.get('/p/:page', (req, res) => {
 	try{
 		if(fs.existsSync(path.join(__dirname, 'pages', data.pages[page].directory, 'index.html'))){/* file exists */}
 	}catch(err){
-		res.status(404).render(path.join(__dirname, 'pages', data.pages['404'].directory, 'index.html'), {host: host, statics: static_files, page: data.pages['404'].directory, info: info});
+		res.status(404).render(path.join(__dirname, 'pages', data.pages['404'].directory, 'index.html'), {host: host, statics: static_files, page: data.pages['404'].directory});
+		return;
 	}
 
 	var password = req.query.password;
-	if(Object.keys(data.pages).includes(page)){
-		var pass_on = false;
-		if(data.pages[page].password == false){
+	var pass_on = false;
+
+	if(data.pages[page].password == false){
+		pass_on = true;
+	}else if(data.pages[page].password == true){
+		if(password == data.gen_password){
 			pass_on = true;
-		}else if(data.pages[page].password == true){
-			if(password == data.gen_password){
-				pass_on = true;
-			}
-		}else{
-			if(password == data.pages[page].password){
-				pass_on = true;
-			}
-		}
-
-		if(pass_on){
-			var info = {};
-			if(page == 'launcher'){
-				
-			}
-
-			res.status(200).render(path.join(__dirname, 'pages', data.pages[page].directory, 'index.html'), {host: host, statics: static_files, page: data.pages[page].directory, info: info});
-		}else{
-			res.status(404).render(path.join(__dirname, 'pages', data.pages['restricted'].directory, 'index.html'), {host: host, statics: static_files, page: data.pages['restricted'].directory, info: info});
 		}
 	}else{
-		res.status(404).render(path.join(__dirname, 'pages', data.pages['404'].directory, 'index.html'), {host: host, statics: static_files, page: data.pages['404'].directory, info: info});
+		if(password == data.pages[page].password){
+			pass_on = true;
+		}
 	}
-});
 
-// favicon
-app.get('/favicon.ico', (req, res) => {
-	res.send('');
+	if(pass_on){
+		var info = {};
+
+		res.status(200).render(path.join(__dirname, 'pages', data.pages[page].directory, 'index.html'), {host: host, statics: static_files, page: data.pages[page].directory, info: info});
+		
+		if(req.url.startsWith('/p/uptime')){
+			tools.log('uptime', 'uptime robot successfully monitored!');
+		}
+	}else{
+		res.status(404).render(path.join(__dirname, 'pages', data.pages['restricted'].directory, 'index.html'), {host: host, statics: static_files, page: data.pages['restricted'].directory});
+	}
 });
 
 // all other pages
 app.get('*', (req, res) => {
-	res.status(404).render(path.join(__dirname, 'pages', data.pages['404'].directory, 'index.html'), {host: host, statics: static_files, page: data.pages['404'].directory, info: info});
+	res.status(404).render(path.join(__dirname, 'pages', data.pages['404'].directory, 'index.html'), {host: host, statics: static_files, page: data.pages['404'].directory});
 });
 
 // listen to port / on start

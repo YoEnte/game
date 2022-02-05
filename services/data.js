@@ -68,6 +68,11 @@ exports.pages = {
         directory:  'game_v0.1.0',
         password: false,
         type: 'experimental',
+    },
+	game_v0_1_1: {
+        directory:  'game_v0.1.1',
+        password: false,
+        type: 'experimental',
     }
 };
 

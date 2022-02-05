@@ -38,13 +38,13 @@ class Objects{
                                 element.x + element.w - box.x_off :     //true
                             (this.old_velx > 0 && element.x < box.x + box.w + this.old_velx && this.move.old_x + box.w / 2 <= element.x) ?
                                 element.x + box.x_off : this.x :        //false
-                            this.x;                                   	//else
+                            this.x  ;                                   //else
                         this.y = (element.x < box.x + box.w && element.x + element.w > box.x && this.old_vely != 0) ? 
                             (this.old_vely < 0 && box.y + this.old_vely < element.y + element.h && this.move.old_y >= element.y + element.h) ? 
                                 element.y + element.h - box.y_off :     //true
                             (this.old_vely > 0 && element.y < box.y + box.h + this.old_vely && this.move.old_y + box.h / 2 <= element.y) ?
                                 element.y + box.y_off : this.y :        //false
-                            this.y;                                   	//else
+                            this.y  ;                                   //else
 
 						/*
 							ctx.fillStyle = 'yellow'

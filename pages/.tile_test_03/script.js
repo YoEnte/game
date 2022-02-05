@@ -15,9 +15,12 @@ const mapData = {
 };
 
 const assets = {
-	grass_tiles	: 'assets/grass_tiles_test3.png',
-	path_tiles	: 'assets/path_tiles_test3.png',
-	stone_tiles	: 'assets/stone_tiles_test3.png',
+	ggrass_tiles	: 'assets/grass_tiles_test3.png',
+	ppath_tiles	: 'assets/path_tiles_test3.png',
+	sstone_tiles	: 'assets/stone_tiles_test3.png',
+    grass_tiles	: 'assets/grass_tiles4.png',
+	path_tiles	: 'assets/path_tiles4.png',
+	stone_tiles	: 'assets/stone_tiles4.png',
 }
 
 const assets_num = Object.keys(assets).length;
@@ -148,13 +151,14 @@ function gen_draw_map(){
 
 						draw_map[y][x] = add_draw_array(draw_map[y][x], draw_array);
 
-						// own corner
+						// overlay corner
 						if(col[0] > lowestTile || (col[0] > lowestTile && tileCol == undefined)){
 							var cornerOverlay = 0;
 
-							cornerOverlay += (mapData.map[y][x + xDiff] == undefined || (tileCol != undefined && col[0] <= mapData.map[y][x + xDiff][0])) ? 1 : 0;
-							cornerOverlay += (mapData.map[y + yDiff] == undefined || (tileCol != undefined && col[0] <= mapData.map[y + yDiff][x][0])) ? 2 : 0;
+							cornerOverlay += (mapData.map[y][x + xDiff] == undefined || (tileCol != undefined && col[0] <= mapData.map[y][x + xDiff][0])) ? 1 : 0; 	// horizontal
+							cornerOverlay += (mapData.map[y + yDiff] == undefined || (tileCol != undefined && col[0] <= mapData.map[y + yDiff][x][0])) ? 2 : 0;		// vertical
 
+							// own
 							var draw_array = {
 								z		: col[0],
 								draw	: [
@@ -171,6 +175,49 @@ function gen_draw_map(){
 							};
 
 							draw_map[y][x] = add_draw_array(draw_map[y][x], draw_array);
+
+							// others
+							if(cornerOverlay == 0 || ((cornerOverlay == 1 || cornerOverlay == 2) && (mapData.map[y + yDiff] != undefined || mapData.map[y][x + xDiff] != undefined))){
+								if((tileCol != undefined && col[0] > mapData.map[y][x + xDiff][0]) && mapData.map[y][x + xDiff][0] != lowestTile){		// horizontal
+
+									var draw_array = {
+										z		: mapData.map[y][x + xDiff][0],
+										draw	: [
+											document.querySelector(`.${tileTypes[mapData.tileType].tiles[mapData.map[y][x + xDiff][0]][mapData.map[y][x + xDiff][1]]}`),
+											xMargin + (5 * mapData.tileSize),
+											yMargin,
+											mapData.edgeSize,
+											mapData.edgeSize,
+											(x * mapData.tileSize) + xMargin,
+											(y * mapData.tileSize) + yMargin,
+											mapData.edgeSize,
+											mapData.edgeSize,
+										],
+									};
+
+									draw_map[y][x] = add_draw_array(draw_map[y][x], draw_array);
+								}
+
+								if((tileCol != undefined && col[0] > mapData.map[y + yDiff][x][0]) && mapData.map[y + yDiff][x][0] != lowestTile){		// horizontal
+
+									var draw_array = {
+										z		: mapData.map[y + yDiff][x][0],
+										draw	: [
+											document.querySelector(`.${tileTypes[mapData.tileType].tiles[mapData.map[y + yDiff][x][0]][mapData.map[y + yDiff][x][1]]}`),
+											xMargin + (6 * mapData.tileSize),
+											yMargin,
+											mapData.edgeSize,
+											mapData.edgeSize,
+											(x * mapData.tileSize) + xMargin,
+											(y * mapData.tileSize) + yMargin,
+											mapData.edgeSize,
+											mapData.edgeSize,
+										],
+									};
+
+									draw_map[y][x] = add_draw_array(draw_map[y][x], draw_array);
+								}
+							}
 						}
 
 					}else if(countPos % 2 == 1){								// if edge
